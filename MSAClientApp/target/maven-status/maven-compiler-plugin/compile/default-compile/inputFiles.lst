@@ -1,0 +1,8 @@
+/root/Desktop/microservices/itict2020/MSAClientApp/src/main/java/client/RemoteClient.java
+/root/Desktop/microservices/itict2020/MSAClientApp/src/main/java/event/microservices/msaclientapp/service/ExampleService.java
+/root/Desktop/microservices/itict2020/MSAClientApp/src/main/java/event/microservices/msaclientapp/config/CrossOriginResourceSharingFilter.java
+/root/Desktop/microservices/itict2020/MSAClientApp/src/main/java/event/microservices/msaclientapp/service/package-info.java
+/root/Desktop/microservices/itict2020/MSAClientApp/src/main/java/event/microservices/msaclientapp/config/Producers.java
+/root/Desktop/microservices/itict2020/MSAClientApp/src/main/java/ui/ClientServlet.java
+/root/Desktop/microservices/itict2020/MSAClientApp/src/main/java/event/microservices/msaclientapp/config/BootStrap.java
+/root/Desktop/microservices/itict2020/MSAClientApp/src/main/java/event/microservices/msaclientapp/service/HealthCheckService.java
