@@ -6,3 +6,5 @@
 /root/Desktop/microservices/itict2020/MSAClientApp/src/main/java/ui/ClientServlet.java
 /root/Desktop/microservices/itict2020/MSAClientApp/src/main/java/event/microservices/msaclientapp/config/BootStrap.java
 /root/Desktop/microservices/itict2020/MSAClientApp/src/main/java/event/microservices/msaclientapp/service/HealthCheckService.java
+/root/Desktop/microservices/itict2020/MSAClientApp/src/main/java/token/GenerateToken.java
+/root/Desktop/microservices/itict2020/MSAClientApp/src/main/java/token/MPJWTToken.java

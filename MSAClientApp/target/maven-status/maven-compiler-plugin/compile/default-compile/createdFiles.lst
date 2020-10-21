@@ -1,7 +1,9 @@
 event/microservices/msaclientapp/config/Producers.class
 client/RemoteClient.class
+token/GenerateToken.class
 event/microservices/msaclientapp/config/BootStrap.class
 event/microservices/msaclientapp/service/ExampleService.class
 ui/ClientServlet.class
 event/microservices/msaclientapp/config/CrossOriginResourceSharingFilter.class
 event/microservices/msaclientapp/service/HealthCheckService.class
+token/MPJWTToken.class

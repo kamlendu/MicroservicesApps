@@ -12,6 +12,7 @@ import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.eclipse.microprofile.rest.client.annotation.ClientHeaderParam;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import token.GenerateToken;
 
 /**
  *
@@ -31,7 +32,8 @@ public interface RemoteClient {
     {
         
         Config config = ConfigProvider.getConfig();
-        String token = "Bearer "+ config.getValue("jwt-string", String.class);
+       // String token = "Bearer "+ config.getValue("jwt-string", String.class);
+       String token = "Bearer "+ GenerateToken.generateJWT();
         System.out.println("token = "+ token);
         return token;
     }
