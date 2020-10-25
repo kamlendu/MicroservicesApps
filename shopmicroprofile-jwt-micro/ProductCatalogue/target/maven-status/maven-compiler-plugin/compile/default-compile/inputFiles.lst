@@ -1,0 +1,11 @@
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ProductCatalogue/src/main/java/myproject/productcatalogue/config/BootStrap.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ProductCatalogue/src/main/java/myproject/productcatalogue/service/RawToken.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ProductCatalogue/src/main/java/myproject/productcatalogue/service/HealthCheckService.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ProductCatalogue/src/main/java/myproject/productcatalogue/config/Producers.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ProductCatalogue/src/main/java/myproject/productcatalogue/service/StockClient.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ProductCatalogue/src/main/java/myproject/productcatalogue/entity/Product.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ProductCatalogue/src/main/java/myproject/productcatalogue/service/package-info.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ProductCatalogue/src/main/java/myproject/productcatalogue/service/ProductResource.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ProductCatalogue/src/main/java/myproject/productcatalogue/model/ProductService.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ProductCatalogue/src/main/java/myproject/productcatalogue/config/CrossOriginResourceSharingFilter.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ProductCatalogue/src/main/java/myproject/productcatalogue/entity/Stock.java

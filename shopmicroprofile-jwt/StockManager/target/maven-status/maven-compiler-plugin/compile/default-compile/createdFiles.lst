@@ -1,0 +1,10 @@
+myproject/stockmanager/entity/Stock_.class
+myproject/stockmanager/config/BootStrap.class
+myproject/stockmanager/config/Producers.class
+myproject/stockmanager/model/StockService.class
+myproject/stockmanager/service/StockResource.class
+myproject/stockmanager/entity/Product_.class
+myproject/stockmanager/entity/Stock.class
+myproject/stockmanager/entity/Product.class
+myproject/stockmanager/config/CrossOriginResourceSharingFilter.class
+myproject/stockmanager/service/HealthCheckService.class

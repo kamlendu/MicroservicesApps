@@ -1,0 +1,17 @@
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/servlets/Logout.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/token/MPJWTToken.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/myproject/shopfront/service/ProductClient.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/myproject/shopfront/config/CrossOriginResourceSharingFilter.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/myproject/shopfront/service/ExampleService.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/servlets/ShopServlet.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/myproject/shopfront/service/package-info.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/token/GenerateToken.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/auth/ShopAuthenticationMechanism.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/project/MyCredentials.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/project/Project.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/myproject/shopfront/service/HealthCheckService.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/servlets/UserServlet.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/servlets/HomeServlet.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/myproject/shopfront/config/BootStrap.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/myproject/shopfront/model/Product.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/ShopFront/src/main/java/myproject/shopfront/config/Producers.java

@@ -1,0 +1,9 @@
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/StockManager/src/main/java/myproject/stockmanager/config/BootStrap.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/StockManager/src/main/java/myproject/stockmanager/service/HealthCheckService.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/StockManager/src/main/java/myproject/stockmanager/model/StockService.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/StockManager/src/main/java/myproject/stockmanager/config/Producers.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/StockManager/src/main/java/myproject/stockmanager/service/package-info.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/StockManager/src/main/java/myproject/stockmanager/entity/Product.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/StockManager/src/main/java/myproject/stockmanager/config/CrossOriginResourceSharingFilter.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/StockManager/src/main/java/myproject/stockmanager/entity/Stock.java
+/root/Desktop/microservices/shopmicroprofile-jwt-micro/StockManager/src/main/java/myproject/stockmanager/service/StockResource.java
