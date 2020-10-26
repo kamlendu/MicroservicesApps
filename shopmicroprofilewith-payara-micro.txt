@@ -1,0 +1,15 @@
+// Working with payara micro -- run three instances of payara-micro
+
+
+1) java -jar payara-micro-5.194.jar --deploy shopmicroprofile-jwt-micro/StockManager/target/StockManager.war --port 8085 --addlibs mysql-connector-java-5.1.47-bin.jar --domainconfig domain.xml
+
+2) java -jar payara-micro-5.194.jar --deploy shopmicroprofile-jwt-micro/ProductCatalogue/target/ProductCatalogue.war --port 8086 --addlibs mysql-connector-java-5.1.47-bin.jar --domainconfig domain.xml
+
+3) java -jar payara-micro-5.194.jar --deploy shopmicroprofile-jwt-micro/ShopFront/target/ShopFront.war --port 8087 --addlibs mysql-connector-java-5.1.47-bin.jar --domainconfig domain.xml
+
+http://localhost:8087/ShopFront
+
+
+java -jar payara-micro-5.194.jar --deploy trial/EventSourcingProject/checking-acct-service/target/dependency/kafka-rar-0.1.0.rar --deploy trial/EventSourcingProject/checking-acct-service/target/checking-acct-service-1.0 --noCluster --port 8085 --addlibs mysql-connector-java-5.1.47-bin.jar --domainconfig domain.xml
+
+
