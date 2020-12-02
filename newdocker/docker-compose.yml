@@ -1,0 +1,29 @@
+version: '2.3'
+services:
+  testjpa:
+    container_name: testjpa
+    image: newjpapayara:latest
+    ports:
+     - 7080:8080  
+    networks: 
+        - inetwork
+ 
+  database:
+    container_name: database
+    image: mysql/mysql-server:5.7
+    volumes:
+     - data:/var/lib/mysql
+    ports:
+     - "3406:3306"
+    networks: 
+        - inetwork
+
+volumes: 
+  data:
+    driver: local
+    name: newvolume
+
+networks: 
+  inetwork:
+    driver: bridge
+    name: mynetwork
