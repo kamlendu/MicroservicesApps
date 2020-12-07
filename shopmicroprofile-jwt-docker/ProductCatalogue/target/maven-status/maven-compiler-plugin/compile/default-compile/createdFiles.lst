@@ -1,0 +1,12 @@
+myproject/productcatalogue/service/HealthCheckService.class
+myproject/productcatalogue/service/ProductResource.class
+myproject/productcatalogue/entity/Product_.class
+myproject/productcatalogue/service/RawToken.class
+myproject/productcatalogue/entity/Stock.class
+myproject/productcatalogue/config/CrossOriginResourceSharingFilter.class
+myproject/productcatalogue/service/StockClient.class
+myproject/productcatalogue/config/Producers.class
+myproject/productcatalogue/entity/Product.class
+myproject/productcatalogue/config/BootStrap.class
+myproject/productcatalogue/model/ProductService.class
+myproject/productcatalogue/entity/Stock_.class

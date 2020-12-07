@@ -1,0 +1,99 @@
+**** Running multiple micro profile based applications in Docker containers *****
+
+Server : Payara-Micro edition (A small footprint of Java Application Server for micro services) runs on port 8080 by default
+
+*****we have multiple microservice in diffrent microprofile based project and one or many microservices are talking to the containarised database ****
+
+Apps in Java and build by Maven  are
+ocker
+	1) StockManager (StockManager.war)	2) ProductCatalogue (ProductCatalogue.war)	3) ShopFront (ShopFront.war)	 
+
+	4) MySQL database 5.7
+
+Flow : ShopFront is front end which displays all the products available in the Stock in a Tabular form. Shop uses ProductService which belongs to ProductCatalogue Project. Project catalogue gets the ids of all the products whose stock is available using StockManagerService in StockManager Project. StockManager Service is querying the stock table in MySql database and Productservice queries Product table from same mySQL database (database name : test)  
+
+We wish to deploy them in 4 independent docker containers which are in a Single network of bridge type.
+
+The steps
+
+1) create docker network
+
+	# docker network create mynetwork   -- we have create network named mynetwork
+
+2.Plan your deployment . decide the names of your containers and port which will be exposed to host
+
+The name of the containers in this case are 
+
+Application		   container-name	hostport:conainerport
+mysql database		  	database	3406:3306
+StockManager			stock		9050:8080
+ProductCatalogue		product	9060:8080
+ShopFront			shopfront	9070:8080
+
+** Very important : Make necessary corrections in all urls in your original application. Replace localhost or server name with the container name
+
+*** Actually only Shopfront requires host port but for testing them individually host ports for others are  also given. 
+
+1. MySQL image building and running is given in detail in a separate file dockermysqlconfig.txt in /Desktop/microservices
+
+	The Mysql database is run as 
+
+		# docker run --name=database -p 3406:3306 --network mynetwork -v /var/storage:/var/lib/mysql -d  mysql/mysql-server:5.7 
+	
+	You can work on the terminal as
+
+		# docker exec -it database mysql -uroot -pompandey
+
+2. Now build the image of stockmanager using the Dockerfile placed in StockManager folder of the application. The war file is placed in target folder of StockManager
+
+
+
+The sample Docker file is given as under
+# Using the Payara Micro 5 snapshot build.
+
+FROM payara/micro
+USER root
+# create a custom config folder
+RUN mkdir ${PAYARA_HOME}/config
+COPY domain.xml ${PAYARA_HOME}/config/
+COPY mysql-connector-java-5.1.47-bin.jar ${PAYARA_HOME}/config
+RUN chown -R payara:payara ${PAYARA_HOME}/config
+USER payara
+WORKDIR ${PAYARA_HOME}
+# Deploy artefacts
+COPY target/StockManager.war $DEPLOY_DIR
+CMD ["--addLibs","/opt/payara/config/mysql-connector-java-5.1.47-bin.jar", "--deploymentDir", "/opt/payara/deployments", "--rootDir", "/opt/payara/config","--domainConfig", "/opt/payara/config/domain.xml"]]
+
+This docker file copies mysql-connector-java-5.1.47-bin.jar (mysql driver) and domain.xml (xml in which jndi for my database is configured)  placed in the folder where Dockerfile is placed.
+
+docker commands 
+=================
+
+1. Buid the image
+
+	# docker build -t stocknew .
+
+2. create container and run
+	# docker run --name=database -p 3406:3306 --network mynet -v /var/storage:/var/lib/mysql -d mysql/mysql-server:5.7
+	# docker run   --name=stocknew -p 9050:8080 --network mynet stocknew
+	# docker run   --name=productnew -p 9060:8080 --network mynet productnew
+	# docker run   --name=shopfrontnew -p 9070:8080 --network mynet shopfrontnew
+	
+
+== so now stock is running 
+
+
+Repeat above steps  productCatalogue and ShopFront.
+
+Once all the containers are running
+
+Go to the browser and enter the URL : http://localhost:9070/ShopFront
+
+Voila you will get the product catalogue in tabular form.
+
+
+
+
+
+
+

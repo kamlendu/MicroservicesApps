@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1beta1 # for versions before 1.14 use extensions/v1beta1i
+kind: Ingress
+metadata:
+  name: example-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite /jwt/(.*) /$1 break;
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: shopfrontnew
+          servicePort: 8080
+      - path: /jwt
+        backend:
+          serviceName: shopfront
+          servicePort: 8080
