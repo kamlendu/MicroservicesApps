@@ -1,0 +1,3 @@
+[2020-08-01 18:00:57,351] INFO Creating new log file: log.96 (org.apache.zookeeper.server.persistence.FileTxnLog)
+[2020-08-01 18:00:58,356] WARN fsync-ing the write ahead log in SyncThread:0 took 1001ms which will adversely effect operation latency. File size is 67108880 bytes. See the ZooKeeper troubleshooting guide (org.apache.zookeeper.server.persistence.FileTxnLog)
+[2020-08-01 18:01:11,602] WARN fsync-ing the write ahead log in SyncThread:0 took 1136ms which will adversely effect operation latency. File size is 67108880 bytes. See the ZooKeeper troubleshooting guide (org.apache.zookeeper.server.persistence.FileTxnLog)

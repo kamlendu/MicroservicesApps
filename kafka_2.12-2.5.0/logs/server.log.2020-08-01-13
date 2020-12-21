@@ -1,0 +1,5 @@
+[2020-08-01 13:04:47,516] INFO [GroupCoordinator 0]: Dynamic Member with unknown member id joins group fundTransfer in Stable state. Created a new member id savingsAcctFundTransferListener-919a1586-1116-41d6-9e77-c34391046452 for this member and add to the group. (kafka.coordinator.group.GroupCoordinator)
+[2020-08-01 13:04:47,543] INFO [GroupCoordinator 0]: Preparing to rebalance group fundTransfer in state PreparingRebalance with old generation 7 (__consumer_offsets-8) (reason: Adding new member savingsAcctFundTransferListener-919a1586-1116-41d6-9e77-c34391046452 with group instance id None) (kafka.coordinator.group.GroupCoordinator)
+[2020-08-01 13:04:47,686] INFO [GroupCoordinator 0]: Stabilized group fundTransfer generation 8 (__consumer_offsets-8) (kafka.coordinator.group.GroupCoordinator)
+[2020-08-01 13:04:48,005] INFO [GroupCoordinator 0]: Assignment received from leader for group fundTransfer for generation 8 (kafka.coordinator.group.GroupCoordinator)
+[2020-08-01 13:08:57,236] INFO [GroupMetadataManager brokerId=0] Removed 0 expired offsets in 0 milliseconds. (kafka.coordinator.group.GroupMetadataManager)
