@@ -1,0 +1,222 @@
+Working with Amazon Web Services -- MicroServices with Micro Profile and DevOps (docker and kubernetes and API-gateway inggress)
+
+
+1. Requested to Amazon webservice for an AWS Educate account by giving credentials of my job profile
+
+2. Request Accepted.
+3. Created An account with user name and password . This is the root user.
+4. AWS gave me many services to use in a limited was Some popular services like IAM, EC2, S3, ECS and many othere wer given. Surprisingly EKS (Elastic Kubernetes Service) is not given.
+
+My Actions on Project
+
+1. A Java Microservice Project with MySQl database is already developed in local machine and well tested with docker and kubernetes. My purpose was to port it on AWS
+
+1. Install aws CLI (command line client) to configure aws on your machine. 
+#apt-get update
+#apt-get install awscli 
+
+once awscli is installed it will create .aws folder in your home directory. from that folder open a file called credentials. In this file you have to store the access keys, secret key and token given by aws
+
+2. Login into aws educate account . the page after successful login will have two buttons : Account Details and AWS Console. Click on Account details. You will get a screen and you will have Show button under AWS CLI. You will get all client credentials. copy that and paste it into credential file in .aws directory. save that file. now usin aws utility you can perform many tasks. 
+
+
+3. Go to IAM service. Well you are not permitted to create users or groups in AWS account. You have to work with your root account only
+   You can create policies and Roles. Create a Role for you and specify the service you want to use . Now you can attach this role to your ec2 instance with using Action-> instance Settings -> Attach IM Role
+
+3. Now go to ECS service. Create Repository for images.
+
+4. On local machine  tag the local docker images as per ECS repository name and push them
+
+	login into ECS container
+
+   # $(aws ecr get-login --no-include-email --region us-east-1)
+	you will get : login succeeded
+	
+	Tag the image
+
+eg.    # docker -t <image_name> <aws_repository_name>:<tag>
+       # docker -t mysql/mysq-server:5.7 107785248118.dkr.ecr.us-east-1.amazonaws.com/mysql-mysql-server:latest
+
+	Push the image to docker container
+	
+	# docker push 	107785248118.dkr.ecr.us-east-1.amazonaws.com/mysql-mysql-server:latest
+
+The image will be pushed to ecs repository . Go to ECS and see the repository and image to verify it.
+
+5. Go to EC2 service and create a instance for you . choose your favourite machine and configuration. I choosed Ubuntu 18.04 machin with t2.medium type. Don't choose default t2.micro as it has only 1 CPU and your Kubernetes will not run on that. t2.medium has 2 CPUs
+
+6. While creating the instance you will be prompted to create the key pair . Do it. Download the private key to your local machine that will be used to start and login to your instance. the default username of your instance is ubuntu.
+
+7. Go to EC2/ instance and start your instance. Once the instance is started it will show lot of details like private and public ip addressses and security credentials etc in AWS EC2 page. Every instance will be given a public dns. copy it
+
+8. To work with your instance open the terminal. Work in root 
+	create a root password
+	# passwd root
+	# su
+ 
+======== How to work with aws instance on your host machine
+
+	# ssh -i <privatekey.pem> ubuntu@<public dns>   // install ssh if you dont have / even putty will also work
+you will get the shell of your ubuntu machine. Now you can work on it.
+
+	1. Install Docker 
+	# apt install apt-transport-https ca-certificates curl software-properties-common
+	# curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	# add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+	# apt update
+	# apt-cache policy docker-ce
+	# apt-install docker-ce
+	
+	2. Install kubernetes
+ 	#  curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+	#  touch /etc/apt/sources.list.d/kubernetes.list
+        # echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+	# apt-get update
+	# apt-get install kubectl
+
+	3. install minikube
+	
+	# curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64   && chmod +x minikube
+	# chmod +x minikube && sudo mv minikube /usr/local/bin/
+	# apt-get install conntrack
+	
+Now we start minikube 
+	# minikube start --vm-driver=none
+Check its version
+	# minikube version
+
+	
+4. Now porting my yaml files on ec2 instance
+	on ec2 instance create folder k8aws in home and storage in /var
+
+Switch to your local terminal to transfer file from /root/k8aws folder to ec2instance k8aws folder
+ubuntikeypair.pem is your keypair file generated while creating the ec2 instance. It is stored in root.  k8aws folder which contains all my yaml files to be used in kubernetes deployment ,  is also in root
+All yaml files will be transfered from local machine to ec2 instance
+
+	# scp -i ubuntukeypair.pem ~/k8aws/*.* ubuntu@ec2-3-85-9-155.compute-1.amazonaws.com:~/k8aws/
+
+	transfer data file of mysql data to k8aws directory
+	# scp -i /root/mykeypair.pem ~/root/dumps/mydata.sql ubuntu@ec2-18-212-53-99.compute-1.amazonaws.com:~/k8aws
+
+in the same way copy contents of  /var/storage of local machine to /var/storage of ec2 instance using scp command
+
+5. Now deploying application on kubernetes
+
+	# kubectl create secret generic mysql-pass --from-literal=password=ompandey
+Deploy persistent volume. The ec2 /var/storage folder is mentioned in that to create a persistant volume
+	# kubectl apply -f mysql-pv.yaml 
+Deploy mysql-service
+
+	kubectl apply -f mysql-service.yaml
+	kubectl apply -f stockmanager-service.yaml
+	kubectl apply -f productcatalogue1-service.yaml
+	kubectl apply -f shopfront-service.yaml
+	#minikube addons enable ingress
+	#kubectl apply -f ingress-service.yaml
+
+once all the services are deployed get all services by 
+	#  kubect get svc
+
+root@ip-172-31-82-82:/home/ubuntu/k8aws# kubectl get svc
+NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+database     ClusterIP   None             <none>        3306/TCP         98m
+kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP          23h
+product      NodePort    10.97.205.202    <none>        8080:32759/TCP   98m
+shopfront    NodePort    10.101.100.187   <none>        8080:31093/TCP   98m
+stock        NodePort    10.111.71.111    <none>        8080:30958/TCP   98m
+
+get pods as 
+root@ip-172-31-82-82:/home/ubuntu/k8aws# kubectl get pods
+NAME                     READY   STATUS    RESTARTS   AGE
+mysql-5dd66fd796-hpl8l   1/1     Running   0          108m
+product-jx6rl            1/1     Running   3          108m
+shopfront-ss7ns          1/1     Running   2          108m
+stock-mqmw2              1/1     Running   3          108m
+
+
+
+6. allow incoming traffic 
+
+Go to Security Groups : launch-wizard2 , Edit inbound rules. There create a new rule. use custom-TCP as protocol and port as 30000-40000 as minikube generates port in this range. Save
+Similarly create a new rule for protocol HTTP which has 80 by default. allow and save
+
+7. start mysql by
+	# kubectl exec -it mysql-5dd66fd796-hpl8l -- mysql -u root -p
+
+on mysql prompt give permissions to all IPs to root
+	mysql> create USER 'root'@'%' identified by 'password';
+	mysql> GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' identified by 'ompandey' WITH GRANT OPTION;
+	mysql> commit;
+	mysql> exit;
+ 
+
+
+7. Now if you use NodePort  i.e Public ports given in service . for shopfront it is 31093
+
+the Go to browser and use the url <public_ip_address of ec2 instance>:31093/ShopFront/ShopServlet
+
+or <public_dns_address of ec2 instance>:31093/ShopFront/ShopServlet
+
+eg. 	http://3.85.9.155:31093/ShopFront/ShopServlet
+or
+	http://ec2-3-85-9-155.compute-1.amazonaws.com:31093/ShopFront/ShopServlet
+
+Special Note : In k8s services yaml files we do not specify  port for NodePort so ports are generated dynamically. If you specify the port for NodePort type of Node in yaml then that will be a fixed port for the service.
+
+
+Now there is one more problem. The dns and ip is going to change every time you stop and start the instance. So get away with this create an Elastic IP and associate it with your instance from aws console of EC2. This elastic IP will never change and is irrespective of you changing public dns and ip of your instance.
+
+My elastic ip is 34.231.52.15 and I associted this IP with my instance. (The GUI console of EC2-> Elastic IP allows you to do this.
+
+so now my new url is 
+
+http://34.231.52.15:31093/ShopFront/ShopServlet
+
+
+8. If I want to get away with this port business. I cam configure an API gateway and the I can call be service on simple port 80.
+
+1. enable ingress in minikube cluster
+
+# minikube addons enable ingress 
+
+
+This is the ingress-service.yaml file I need to write
+
+#============ ingress-service.yaml==================
+apiVersion: networking.k8s.io/v1beta1 # for versions before 1.14 use extensions$
+kind: Ingress
+metadata:
+  name: example-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: shopfront
+          servicePort: 8080
+#========================================================
+
+now issue command
+
+# kubectl apply -f ingress-service.yaml
+
+-- The api Ingress gateway run on 80. So stop any server which is currently running on 80 port no.
+
+In this case apache was running on 80. So I stopped it using 
+# /etc/init.d/apache2 stop.
+
+the nginx ingress API gateway will be enable and by default it will forward all the traffic to shopfront service throu port 80.
+ 
+
+Voila it works !!!
+
+	
+
+
+
+
+
+
+
+

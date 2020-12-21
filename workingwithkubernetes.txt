@@ -1,0 +1,189 @@
+Working with Minikube and Kubernetes
+
+*** Installing Prerequisites (Maven and Virtualbox) 
+
+apt-get install maven
+apt-get update
+apt-get install apt-transport-https
+apt install virtualbox virtualbox-ext-pack
+
+
+**** Install kubectl and minikube
+
+-- Install Kubectl a command to work on kubernetes
+
+#apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+
+OR
+
+# curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+# touch /etc/apt/sources.list.d/kubernetes.list
+# echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+# apt-get update
+# apt-get install -y kubectl
+
+**** Install minikube a standalone single cluster-based Kubernetes engine
+# curl -Lo minikube https://storage.googleapis.com/minikube/releases/v1.9.2/minikube-linux-amd64 \
+  && chmod +x minikube
+# chmod +x minikube && sudo mv minikube /usr/local/bin/
+
+# install conntrack
+apt-get install conntrack
+
+
+--disable firewall on ubuntu
+
+# ufw disable
+
+-- start minikube , this will install latest kubectl version
+
+# minikube start --driver=none
+
+-- Test minikube 
+minikube version
+
+--Test kubectl
+# kubectl api-versions
+# kubectl version -o json
+
+
+-- check whether dns is working or not
+# kubectl apply -f https://k8s.io/examples/admin/dns/dnsutils.yaml
+# kubectl exec -i -t dnsutils -- nslookup kubernetes.default
+
+
+==================================== Deploying Mysql data on K8s=============================================
+-- deploying mysql with data
+
+kubectl create secret generic mysql-pass --from-literal=password=ompandey
+kubectl apply -f mysql-pv.yaml
+kubectl apply -f mysql-service.yaml
+
+-- get container id
+kubectl get pods (The pods contain single instance of services)
+
+NAME                     READY   STATUS    RESTARTS   AGE
+mysql-8674fcfb4c-fpt6f   1/1     Running   0          36m
+
+--Test Mysql
+
+kubectl exec -it mysql-8674fcfb4c-fpt6f -- mysql -uroot -p
+
+==============================================================================
+
+=============================Deploying other microservice containers ===============================
+-- Creating 3  services in kubernetes from images pushed in Dockerhub. The images must be built and pushed in advance in DockerHub
+
+kubectl apply -f stocknew-service.yaml
+kubectl apply -f productnew-service.yaml
+kubectl apply -f shopfrontnew-service.yaml
+
+--view services 
+
+
+kubectl get svc
+
+NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+database     ClusterIP   None             <none>        3306/TCP         50m
+jpapayara    NodePort    10.104.79.18     <none>        8080:32090/TCP   39m
+kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP          56m
+product      NodePort    10.104.173.173   <none>        8080:31037/TCP   20m
+shopfront    NodePort    10.96.90.147     <none>        8080:30556/TCP   20m
+stock        NodePort    10.104.35.170    <none>        8080:30219/TCP   20m
+
+## check Pods 
+kubectl get pods (The pods contain single instance of services)
+
+NAME                     READY   STATUS    RESTARTS   AGE
+jpapayara-dp7jh          1/1     Running   0          25m
+mysql-8674fcfb4c-fpt6f   1/1     Running   0          36m
+product-tt46z            1/1     Running   0          6m33s
+shopfront-r6q7r          1/1     Running   0          6m20s
+stock-vbjjh              1/1     Running   0          6m56s
+
+
+
+## invoke service 
+
+# minikube service shopfrontnew
+
+# minikube ip
+192.168.1.11
+
+
+#So now you can browse the application as 
+
+http://192.168.1.11:30556/ShopFront/ShopServlet
+
+-- Using Ingress Load balancer / API - Gateway
+
+
+kubectl apply -f ingress-service.yaml
+
+-- enable ingress
+# minikube addons enable ingress
+
+
+
+Note the host name mentioned in this yaml represents minikube host which is at present 192.168.1.11. It is mapped to myshop.info in /etc/hosts
+
+Now you can browse the same application as 
+
+http://myshop.info/ShopFront/ShopServlet  -- The Ingress gateway run on 80. So stop any server which is currently running on 80 port no.
+
+In this case apache was running on 80. So I stopped it using 
+# /etc/init.d/apache2 stop
+
+
+
+-- Kubernetes dashboard
+
+
+creating kubernet-dashboard service
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml
+
+
+-- create user and cluster roles
+
+kubectl apply -f oke-admin-service-account.yaml
+
+to get the JWT token to login
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep oke-admin | awk '{print $1}')
+============================================================================================
+Name:         oke-admin-token-k2k2t
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name: oke-admin
+              kubernetes.io/service-account.uid: 41d5828f-7b9e-4bb9-bdaf-5c2272265ede
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6ImsyNFo5S05ObllHY2NwSmRqbEVKS0l2Vm03U2IxdkNDcFZiZ0wxYjluQ28ifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJva2UtYWRtaW4tdG9rZW4tazJrMnQiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoib2tlLWFkbWluIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiNDFkNTgyOGYtN2I5ZS00YmI5LWJkYWYtNWMyMjcyMjY1ZWRlIiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOm9rZS1hZG1pbiJ9.Dor_jJLAPj9Gw_qQk9uXmnn1ki0W1somJ7FjEM3wu4jU_FuO3dA9DanIjsnVoK6R35eyZ8CWa6XgefeARCEB469TMcY-sbWWy1Yoi0TTWJ7ImVlKea10-DvLKhWUA9_uzkLhpA-hslivaZXLRoDyWrgfKzGvcIfTC60TMuop1iAVQtt6GNoomv2Kl0FyIGp3zB2OFlGz9qNanlgWMImZ3PSNRmB614XrnBAzwrtE07fOhGA2ytjSf0yxehoF6B6iFuqLgbLKUUVy6hEODNTi0v6WXH1CsIXPMWL_KtjlZ5eM1-um6XhUBQ7X61MBHfzhhYy0byX4n2AiyzvUrvM2Sg
+ca.crt:     1066 bytes
+==============================================================================================
+-- copy the token
+
+-- start proxy at 8001
+
+kubectl proxy  
+
+Go to dashboard with this url
+
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/overview?namespace=default
+
+
+use the copied token to login
+
+
+
+
+ 
+
+ 
+
+
+
