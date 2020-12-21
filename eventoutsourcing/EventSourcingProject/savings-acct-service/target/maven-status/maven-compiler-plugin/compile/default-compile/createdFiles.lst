@@ -1,0 +1,10 @@
+event/microservices/savings/acct/entities/SavingsAcct_.class
+event/microservices/savings/acct/listener/SavingsFundTransferListener.class
+event/microservices/savings/acct/entities/SavingsAcct.class
+event/microservices/savings/acct/entities/AcctHolder_.class
+event/microservices/savings/acct/service/resources/JavaEE8Resource.class
+event/microservices/savings/acct/entities/AcctHolder.class
+event/microservices/savings/acct/listener/Config.class
+event/microservices/savings/acct/business/SavingsAcctMgr.class
+event/microservices/savings/acct/service/JAXRSConfiguration.class
+event/microservices/savings/acct/business/SavingsAcctFacade.class

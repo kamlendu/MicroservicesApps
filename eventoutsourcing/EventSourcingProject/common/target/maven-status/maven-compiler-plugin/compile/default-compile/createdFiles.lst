@@ -1,0 +1,3 @@
+event/microservices/common/dto/FundTransferDTO.class
+event/microservices/common/util/FundTransferDTOUtil.class
+event/microservices/common/dto/AccountType.class

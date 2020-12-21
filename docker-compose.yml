@@ -1,0 +1,42 @@
+version: '2.3'
+services:
+  shopfront:
+    container_name: shopfrontnew
+    image: kamlendupandey/shopfrontnew:latest
+    ports:
+     - 7080:8080  
+    networks: 
+        - inetwork
+  product:
+    container_name: productnew
+    image: kamlendupandey/productnew:latest
+    ports:
+     - 7060:8080
+    networks: 
+        - inetwork
+  stock:
+    container_name: stocknew
+    image: kamlendupandey/stocknew:latest
+    ports:
+     - 7050:8080
+    networks: 
+        - inetwork
+  database:
+    container_name: database
+    image: mysql/mysql-server:5.7
+    volumes:
+     - data:/var/lib/mysql
+    ports:
+     - "3406:3306"
+    networks: 
+        - inetwork
+
+volumes: 
+  data:
+    driver: local
+    name: newvolume
+
+networks: 
+  inetwork:
+    driver: bridge
+    name: mynetwork
