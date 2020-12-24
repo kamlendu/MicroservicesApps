@@ -1,0 +1,73 @@
+Database for Kafka Application
+===============================
+Table : ACCT_HOLDER
+
+CREATE TABLE `ACCT_HOLDER` (
+  `id` bigint(9) NOT NULL AUTO_INCREMENT,
+  `FIRST_NAME` varchar(1000) DEFAULT NULL,
+  `LAST_NAME` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+===== The records in table =============
+
++----+------------+--------------+
+| id | FIRST_NAME | LAST_NAME    |
++----+------------+--------------+
+|  1 | David      | Heffelfinger |
+|  2 | Dominika   | Tasarz       |
+|  3 | Matthew    | Gill         |
+|  4 | xczxcxz    | dssd         |
++----+------------+--------------+
+
+================================================================================================
+Table : CHECKING_ACCT
+
+CREATE TABLE `CHECKING_ACCT` (
+  `ID` bigint(19) NOT NULL AUTO_INCREMENT,
+  `ACCT_BALANCE` double DEFAULT NULL,
+  `ACCT_NBR` bigint(19) DEFAULT NULL,
+  `SAVINGS_ACCT_NBR` bigint(19) DEFAULT NULL,
+  `ACCTHOLDER_ID` bigint(9) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `fk_CHECKING_ACCT_1_idx` (`ACCTHOLDER_ID`),
+  CONSTRAINT `fk_CHECKING_ACCT_1` FOREIGN KEY (`ACCTHOLDER_ID`) REFERENCES `ACCT_HOLDER` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+===== The records in table =============
+
++----+--------------+----------+------------------+---------------+
+| ID | ACCT_BALANCE | ACCT_NBR | SAVINGS_ACCT_NBR | ACCTHOLDER_ID |
++----+--------------+----------+------------------+---------------+
+|  1 |          600 |     1234 |             1123 |             1 |
+|  2 |        50000 |     2234 |             2123 |             2 |
+|  3 |        10000 |     3234 |             3123 |             3 |
+|  4 |         5000 |     4234 |             4123 |             4 |
++----+--------------+----------+------------------+---------------+
+
+=========================================================================================================================
+
+Table : SAVINGS_ACCT
+
+CREATE TABLE `SAVINGS_ACCT` (
+  `id` bigint(19) NOT NULL AUTO_INCREMENT,
+  `ACCT_NBR` bigint(16) DEFAULT NULL,
+  `ACCT_BALANCE` double DEFAULT NULL,
+  `CHECKING_ACCT_NBR` bigint(19) DEFAULT NULL,
+  `ACCTHOLDER_ID` bigint(9) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_SAVINGS_ACCT_1_idx` (`ACCTHOLDER_ID`),
+  CONSTRAINT `fk_SAVINGS_ACCT_1` FOREIGN KEY (`ACCTHOLDER_ID`) REFERENCES `ACCT_HOLDER` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+===== The records in table =============
+
++----+----------+--------------+-------------------+---------------+
+| id | ACCT_NBR | ACCT_BALANCE | CHECKING_ACCT_NBR | ACCTHOLDER_ID |
++----+----------+--------------+-------------------+---------------+
+|  1 |     1123 |         1000 |              1234 |             1 |
+|  2 |     2123 |        10000 |              2234 |             2 |
+|  3 |     3123 |        20000 |              3234 |             3 |
+|  4 |     4123 |         5000 |              4234 |             4 |
++----+----------+--------------+-------------------+---------------+
+
